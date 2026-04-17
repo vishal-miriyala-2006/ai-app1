@@ -41,5 +41,5 @@ jobs:
               run: ls -la dist
 
             - name: "deploy to vercel"
-              run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN1 }} --name=cicdproject ./dist
+              run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN2 }} --name=cicdproject ./dist
 
