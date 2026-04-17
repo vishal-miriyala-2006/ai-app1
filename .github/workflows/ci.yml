@@ -1,0 +1,46 @@
+name: "react ci pipeline"
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: "set up node"
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+
+            - name: "check node version"
+              run: node --version
+
+            - name: "clone the repo"
+              uses: actions/checkout@v4
+
+            - name: "listing directories"
+              run: ls
+
+            - name: "install dependencies"
+              run: npm install
+
+            - name: "listing directories"
+              run: ls
+
+            - name: "running lint"
+              run: npm run lint
+
+            - name: "testing"
+              run: npm test
+
+            - name: "build"
+              run: npm run build
+
+            - name: "upload project ready build file"
+              uses: actions/upload-artifact@v4
+              with:
+                name: build
+                path: dist
+
