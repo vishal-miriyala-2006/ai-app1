@@ -41,5 +41,8 @@ jobs:
               run: ls -la dist
 
             - name: "deploy to vercel"
-              run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN2 }} --name=cicdproject ./dist
+              run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN2 }} --env VITE_GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }} --name=cicdproject ./dist
 
+
+          
+# https://cicdproject-3gxfqg6yf-vishalmiriyala900-gmailcoms-projects.vercel.app
