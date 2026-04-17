@@ -33,7 +33,7 @@ jobs:
               run: ls
 
             - name: "install dependencies"
-              run: npm ci
+              run: npm ci || npm install
 
             - name: "listing directories"
               run: ls
