@@ -5,10 +5,18 @@ on:
         workflows: ["react ci pipeline"]
         types:
             - completed
+        branches:
+            - main
+            - master
     # workflow_dispatch:
+
+permissions:
+    actions: read
+    contents: read
 
 jobs:
     deploy:
+        if: github.event.workflow_run.conclusion == 'success'
         runs-on: ubuntu-latest
         environment: production1
 
@@ -16,7 +24,7 @@ jobs:
             - name: "set up nodejs"
               uses: actions/setup-node@v4
               with:
-                  node-version: '20'
+                  node-version: '22.15.0'
 
             - name: "set up vercel cli"
               run: npm install -g vercel
@@ -27,7 +35,11 @@ jobs:
                 name: build
                 run-id: ${{ github.event.workflow_run.id }}
                 github-token: ${{ github.token }}
+                path: dist
+
+            - name: "verify downloaded artifact"
+              run: ls -la dist
 
             - name: "deploy to vercel"
-              run: vercel --prod --token=${{ secrets.VERCEL_TOKEN1 }} --confirm --name=cicdproject
+              run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN1 }} --name=cicdproject ./dist
 

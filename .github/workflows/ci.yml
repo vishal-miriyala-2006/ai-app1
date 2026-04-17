@@ -3,28 +3,37 @@ name: "react ci pipeline"
 on:
     push:
         branches:
+            - main
             - master
+    pull_request:
+        branches:
+            - main
+            - master
+
+permissions:
+    contents: read
 
 jobs:
     build-and-test:
         runs-on: ubuntu-latest
         steps:
+            - name: "clone the repo"
+              uses: actions/checkout@v4
+
             - name: "set up node"
               uses: actions/setup-node@v4
               with:
-                  node-version: '20'
+                  node-version: '22'
+                  cache: 'npm'
 
             - name: "check node version"
               run: node --version
-
-            - name: "clone the repo"
-              uses: actions/checkout@v4
 
             - name: "listing directories"
               run: ls
 
             - name: "install dependencies"
-              run: npm install
+              run: npm ci
 
             - name: "listing directories"
               run: ls
@@ -33,7 +42,7 @@ jobs:
               run: npm run lint
 
             - name: "testing"
-              run: npm test
+              run: npm run test --if-present
 
             - name: "build"
               run: npm run build
@@ -43,4 +52,5 @@ jobs:
               with:
                 name: build
                 path: dist
+                if-no-files-found: error
 
